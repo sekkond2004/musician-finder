@@ -18,6 +18,7 @@ function registerPageRoutes(router, { config }) {
   router.get('/dashboard', requirePageAuth, page('dashboard.html'));
   router.get('/profile/edit', requirePageAuth, page('profile-edit.html'));
   router.get('/search', requirePageAuth, page('search.html'));
+  router.get('/musicians/:id', requirePageAuth, page('musician.html'));
 }
 
 module.exports = { registerPageRoutes };
