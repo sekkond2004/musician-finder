@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign up — Musician Finder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">♪</span> Musician Finder</a>
+      <nav class="site-nav" id="site-nav" aria-label="Main"></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="narrow">
+      <h1>Create your account</h1>
+      <p class="lede">Your email stays private. Other musicians only see your profile.</p>
+      <form class="card stack" id="register-form" novalidate>
+        <div class="alert alert-error" id="form-alert" role="alert"></div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required maxlength="254">
+          <div class="field-error" data-error-for="email"></div>
+        </div>
+        <div>
+          <label for="password">Password <span class="hint">At least 8 characters.</span></label>
+          <input type="password" id="password" name="password" autocomplete="new-password" required minlength="8" maxlength="128">
+          <div class="field-error" data-error-for="password"></div>
+        </div>
+        <div>
+          <label for="confirm">Confirm password</label>
+          <input type="password" id="confirm" name="confirm" autocomplete="new-password" required>
+          <div class="field-error" data-error-for="confirm"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        <p class="center small muted">Already have an account? <a href="/login">Log in</a></p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">Musician Finder · Sprint 1 MVP</footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in — Musician Finder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">♪</span> Musician Finder</a>
+      <nav class="site-nav" id="site-nav" aria-label="Main"></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="narrow">
+      <h1>Welcome back</h1>
+      <p class="lede">Log in to search for musicians and manage your profile.</p>
+      <form class="card stack" id="login-form" novalidate>
+        <div class="alert alert-success" id="logged-out" role="status" hidden>You've been logged out.</div>
+        <div class="alert alert-error" id="form-alert" role="alert"></div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        <p class="center small muted">New here? <a href="/register">Create an account</a></p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">Musician Finder · Sprint 1 MVP</footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

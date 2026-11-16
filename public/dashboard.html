@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — Musician Finder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body data-auth="required">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">♪</span> Musician Finder</a>
+      <nav class="site-nav" id="site-nav" aria-label="Main"></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="medium stack">
+      <div>
+        <h1 id="greeting">Your dashboard</h1>
+        <p class="lede" id="account-line"></p>
+      </div>
+
+      <div class="alert alert-info" id="profile-nudge" hidden>
+        You haven't set up your profile yet. Other musicians can't find you until you do.
+        <a href="/profile/edit">Set up your profile</a>.
+      </div>
+
+      <div class="features" style="margin-top:0">
+        <a class="card" href="/search" style="text-decoration:none;color:inherit">
+          <h2>Find musicians</h2>
+          <p>Search by instrument, genre, skill level and distance.</p>
+        </a>
+        <a class="card" id="view-profile-card" href="/profile/edit" style="text-decoration:none;color:inherit">
+          <h2>My public profile</h2>
+          <p>See your profile the way other musicians see it.</p>
+        </a>
+        <a class="card" href="/profile/edit" style="text-decoration:none;color:inherit">
+          <h2>Edit profile</h2>
+          <p>Update instruments, genres, ZIP code, availability and links.</p>
+        </a>
+      </div>
+
+      <div class="card">
+        <h2>Coming in Sprint 2</h2>
+        <p class="muted mt0">Band "looking for" listings, messaging and an inbox are on the way.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">Musician Finder · Sprint 1 MVP</footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
