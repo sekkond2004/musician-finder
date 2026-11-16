@@ -25,6 +25,9 @@ async function main() {
     logger.info(`Database was empty: added ${created} demo musicians.`);
   }
 
+  // Clear out expired sessions once an hour.
+  setInterval(() => app.services.authService.purgeExpiredSessions(), 60 * 60 * 1000).unref();
+
   const server = http.createServer(app.handler);
   server.listen(config.port, () => {
     logger.info(`Musician Finder listening on http://localhost:${config.port} (${config.nodeEnv})`);
