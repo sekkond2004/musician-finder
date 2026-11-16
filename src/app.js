@@ -22,11 +22,15 @@ const { UserRepository } = require('./repositories/userRepository');
 const { SessionRepository } = require('./repositories/sessionRepository');
 const { LoginAttemptRepository } = require('./repositories/loginAttemptRepository');
 const { LookupRepository } = require('./repositories/lookupRepository');
+const { ProfileRepository } = require('./repositories/profileRepository');
 
 const { AuthService } = require('./services/authService');
+const { GeocodingService } = require('./services/geocodingService');
+const { ProfileService } = require('./services/profileService');
 
 const { registerMetaRoutes } = require('./controllers/metaController');
 const { registerAuthRoutes } = require('./controllers/authController');
+const { registerProfileRoutes } = require('./controllers/profileController');
 const { registerPageRoutes } = require('./controllers/pageController');
 
 const mw = require('./middleware');
@@ -37,6 +41,7 @@ const silentLogger = { info() {}, warn() {}, error() {} };
  * @param {object} options
  * @param {ReturnType<import('./config').loadConfig>} options.config
  * @param {import('node:sqlite').DatabaseSync} [options.db] an open database (defaults to config.databasePath)
+ * @param {typeof fetch} [options.fetchFn] used for ZIP lookups
  * @param {{now:() => number}} [options.clock]
  * @param {{hashPassword:Function, verifyPassword:Function}} [options.hasher]
  * @param {{info:Function, warn:Function, error:Function}} [options.logger]
@@ -44,6 +49,7 @@ const silentLogger = { info() {}, warn() {}, error() {} };
 function createApp({
   config,
   db = openDatabase(config.databasePath),
+  fetchFn = globalThis.fetch,
   clock = { now: () => Date.now() },
   hasher = password,
   logger = silentLogger,
@@ -55,11 +61,14 @@ function createApp({
   const sessions = new SessionRepository(db);
   const loginAttempts = new LoginAttemptRepository(db);
   const lookups = new LookupRepository(db);
+  const profiles = new ProfileRepository(db);
 
   // Services (business logic)
   const authService = new AuthService({ users, sessions, loginAttempts, hasher, clock, config });
+  const geocoder = new GeocodingService({ lookups, fetchFn, enabled: config.zipLookupEnabled });
+  const profileService = new ProfileService({ profiles, lookups, geocoder });
 
-  const deps = { config, db, lookups, authService, startedAt: Date.now() };
+  const deps = { config, db, lookups, authService, profileService, startedAt: Date.now() };
 
   // HTTP pipeline (controllers + middleware)
   const router = new Router();
@@ -72,13 +81,14 @@ function createApp({
 
   registerMetaRoutes(router, deps);
   registerAuthRoutes(router, deps);
+  registerProfileRoutes(router, deps);
   registerPageRoutes(router, deps);
 
   router.use(mw.errorHandler(logger));
   const notFound = mw.notFound(config.publicDir);
 
   const handler = (req, res) => router.handle(req, res, notFound);
-  return { handler, db, services: { authService }, repositories: { users, lookups } };
+  return { handler, db, services: { authService, profileService }, repositories: { users, profiles, lookups } };
 }
 
 module.exports = { createApp };
