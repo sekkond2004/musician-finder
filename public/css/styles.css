@@ -92,6 +92,7 @@ a:hover { color: var(--brand-dark); }
   padding: 6px 2px;
 }
 .site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--brand); }
+.site-nav a.btn-primary, .site-nav a.btn-primary:hover { color: #fff; padding: 6px 10px; }
 
 button.linklike {
   background: none;
