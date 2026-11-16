@@ -1,4 +1,4 @@
-/** Controller for the signed-in user's own profile. */
+/** Controller for the signed-in user's own profile and other musicians' profiles. */
 const { requireAuth } = require('../middleware');
 
 function registerProfileRoutes(router, { profileService }) {
@@ -11,6 +11,11 @@ function registerProfileRoutes(router, { profileService }) {
   router.put('/api/profile', requireAuth, async (req, res) => {
     const profile = await profileService.saveProfile(req.user.id, req.body);
     res.json({ profile, redirectTo: `/musicians/${profile.userId}` });
+  });
+
+  router.get('/api/musicians/:id', requireAuth, (req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({ musician: profileService.getPublicProfile(req.user.id, req.params.id) });
   });
 }
 
