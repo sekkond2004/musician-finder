@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Musician profile — Musician Finder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body data-auth="required">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">♪</span> Musician Finder</a>
+      <nav class="site-nav" id="site-nav" aria-label="Main"></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="medium stack">
+      <p class="mt0"><a href="/search" id="back-link">← Back to search</a></p>
+      <div class="alert alert-success" id="saved" role="status" hidden>Profile saved. This is how other musicians see you.</div>
+      <div class="alert alert-error" id="load-error" role="alert"></div>
+
+      <article class="card stack" id="profile" hidden>
+        <div class="profile-head">
+          <span class="avatar large" id="avatar" aria-hidden="true"></span>
+          <div>
+            <h1 id="name"></h1>
+            <div class="distance" id="distance"></div>
+          </div>
+        </div>
+
+        <dl class="details">
+          <dt>Instruments</dt>
+          <dd id="instruments"></dd>
+          <dt>Genres</dt>
+          <dd id="genres"></dd>
+          <dt>Availability</dt>
+          <dd id="availability"></dd>
+          <dt>Bio</dt>
+          <dd id="bio"></dd>
+          <dt>Recordings</dt>
+          <dd id="links"></dd>
+        </dl>
+
+        <div class="actions" id="actions"></div>
+        <p class="small muted mt0" id="message-note" hidden>Messaging opens in the next release (Sprint 2). Your email and ZIP code are never shown on your profile.</p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">Musician Finder · Sprint 1 MVP</footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/musician.js"></script>
+</body>
+</html>
