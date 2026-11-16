@@ -1,0 +1,19 @@
+{
+  "name": "musician-finder",
+  "version": "0.1.0",
+  "description": "Find local musicians by instrument, genre, skill level and distance.",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/server.js",
+    "seed": "node --disable-warning=ExperimentalWarning src/db/seed.js",
+    "test": "node --disable-warning=ExperimentalWarning --test \"tests/**/*.test.js\"",
+    "test:coverage": "node --disable-warning=ExperimentalWarning --test --experimental-test-coverage \"tests/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "author": "Ekko Nguyen",
+  "license": "MIT"
+}
