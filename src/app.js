@@ -14,12 +14,19 @@
  */
 const { Router } = require('./lib/router');
 const { staticFiles } = require('./lib/http');
+const password = require('./lib/password');
 const { openDatabase } = require('./db/database');
 const { seedReferenceData } = require('./db/seed');
 
+const { UserRepository } = require('./repositories/userRepository');
+const { SessionRepository } = require('./repositories/sessionRepository');
+const { LoginAttemptRepository } = require('./repositories/loginAttemptRepository');
 const { LookupRepository } = require('./repositories/lookupRepository');
 
+const { AuthService } = require('./services/authService');
+
 const { registerMetaRoutes } = require('./controllers/metaController');
+const { registerAuthRoutes } = require('./controllers/authController');
 const { registerPageRoutes } = require('./controllers/pageController');
 
 const mw = require('./middleware');
@@ -30,15 +37,29 @@ const silentLogger = { info() {}, warn() {}, error() {} };
  * @param {object} options
  * @param {ReturnType<import('./config').loadConfig>} options.config
  * @param {import('node:sqlite').DatabaseSync} [options.db] an open database (defaults to config.databasePath)
+ * @param {{now:() => number}} [options.clock]
+ * @param {{hashPassword:Function, verifyPassword:Function}} [options.hasher]
  * @param {{info:Function, warn:Function, error:Function}} [options.logger]
  */
-function createApp({ config, db = openDatabase(config.databasePath), logger = silentLogger }) {
+function createApp({
+  config,
+  db = openDatabase(config.databasePath),
+  clock = { now: () => Date.now() },
+  hasher = password,
+  logger = silentLogger,
+}) {
   seedReferenceData(db);
 
   // Repositories (data layer)
+  const users = new UserRepository(db);
+  const sessions = new SessionRepository(db);
+  const loginAttempts = new LoginAttemptRepository(db);
   const lookups = new LookupRepository(db);
 
-  const deps = { config, db, lookups, startedAt: Date.now() };
+  // Services (business logic)
+  const authService = new AuthService({ users, sessions, loginAttempts, hasher, clock, config });
+
+  const deps = { config, db, lookups, authService, startedAt: Date.now() };
 
   // HTTP pipeline (controllers + middleware)
   const router = new Router();
@@ -47,15 +68,17 @@ function createApp({ config, db = openDatabase(config.databasePath), logger = si
   router.use(mw.requestLogger(logger));
   router.use(staticFiles(config.publicDir));
   router.use('/api', mw.jsonBody());
+  router.use(mw.loadSession(authService));
 
   registerMetaRoutes(router, deps);
+  registerAuthRoutes(router, deps);
   registerPageRoutes(router, deps);
 
   router.use(mw.errorHandler(logger));
   const notFound = mw.notFound(config.publicDir);
 
   const handler = (req, res) => router.handle(req, res, notFound);
-  return { handler, db, services: {}, repositories: { lookups } };
+  return { handler, db, services: { authService }, repositories: { users, lookups } };
 }
 
 module.exports = { createApp };

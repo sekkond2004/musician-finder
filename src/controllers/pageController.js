@@ -13,6 +13,9 @@ function registerPageRoutes(router, { config }) {
     req.user ? res.redirect('/dashboard') : page(name)(req, res);
 
   router.get('/', page('index.html'));
+  router.get('/register', guestOnly('register.html'));
+  router.get('/login', guestOnly('login.html'));
+  router.get('/dashboard', requirePageAuth, page('dashboard.html'));
 }
 
 module.exports = { registerPageRoutes };
