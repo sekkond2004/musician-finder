@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find musicians — Musician Finder</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body data-auth="required">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">♪</span> Musician Finder</a>
+      <nav class="site-nav" id="site-nav" aria-label="Main"></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <h1>Find musicians near you</h1>
+    <p class="lede">Distances are measured from the ZIP code on your profile.</p>
+
+    <div class="alert alert-info" id="profile-required" hidden>
+      Set up your profile first so we know where to search from. <a href="/profile/edit">Set up your profile</a>.
+    </div>
+
+    <div class="search-layout" id="search-layout">
+      <form class="card filters" id="search-form" role="search" aria-label="Search filters">
+        <div class="field">
+          <label for="instrument">Instrument</label>
+          <select id="instrument" name="instrument"><option value="">Any instrument</option></select>
+        </div>
+        <div class="field">
+          <label for="skill">Skill level</label>
+          <select id="skill" name="skill"><option value="">Any level</option></select>
+        </div>
+        <div class="field">
+          <label for="genre">Genre</label>
+          <select id="genre" name="genre"><option value="">Any genre</option></select>
+        </div>
+        <div class="field">
+          <label for="distance">Within</label>
+          <select id="distance" name="distance"></select>
+        </div>
+        <div class="field actions">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <button type="button" class="btn btn-secondary" id="reset-filters">Reset</button>
+        </div>
+      </form>
+
+      <section aria-labelledby="results-heading">
+        <div class="results-head">
+          <h2 id="results-heading" class="mt0">Results</h2>
+          <span class="muted small" id="results-count" aria-live="polite"></span>
+        </div>
+        <div class="alert alert-error" id="search-alert" role="alert"></div>
+        <ul class="results" id="results"></ul>
+        <div class="card empty" id="empty" hidden>
+          <p class="mt0" id="empty-message"></p>
+          <button type="button" class="btn btn-primary" id="widen" hidden>Search wider</button>
+        </div>
+        <nav class="pager" id="pager" aria-label="Result pages" hidden>
+          <button type="button" class="btn btn-secondary btn-small" id="prev">← Previous</button>
+          <span id="page-info" class="small muted"></span>
+          <button type="button" class="btn btn-secondary btn-small" id="next">Next →</button>
+        </nav>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">Musician Finder · Sprint 1 MVP</footer>
+  <script src="/js/common.js"></script>
+  <script src="/js/search.js"></script>
+</body>
+</html>

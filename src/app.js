@@ -27,10 +27,12 @@ const { ProfileRepository } = require('./repositories/profileRepository');
 const { AuthService } = require('./services/authService');
 const { GeocodingService } = require('./services/geocodingService');
 const { ProfileService } = require('./services/profileService');
+const { SearchService } = require('./services/searchService');
 
 const { registerMetaRoutes } = require('./controllers/metaController');
 const { registerAuthRoutes } = require('./controllers/authController');
 const { registerProfileRoutes } = require('./controllers/profileController');
+const { registerSearchRoutes } = require('./controllers/searchController');
 const { registerPageRoutes } = require('./controllers/pageController');
 
 const mw = require('./middleware');
@@ -67,8 +69,9 @@ function createApp({
   const authService = new AuthService({ users, sessions, loginAttempts, hasher, clock, config });
   const geocoder = new GeocodingService({ lookups, fetchFn, enabled: config.zipLookupEnabled });
   const profileService = new ProfileService({ profiles, lookups, geocoder });
+  const searchService = new SearchService({ profiles });
 
-  const deps = { config, db, lookups, authService, profileService, startedAt: Date.now() };
+  const deps = { config, db, lookups, authService, profileService, searchService, startedAt: Date.now() };
 
   // HTTP pipeline (controllers + middleware)
   const router = new Router();
@@ -82,13 +85,14 @@ function createApp({
   registerMetaRoutes(router, deps);
   registerAuthRoutes(router, deps);
   registerProfileRoutes(router, deps);
+  registerSearchRoutes(router, deps);
   registerPageRoutes(router, deps);
 
   router.use(mw.errorHandler(logger));
   const notFound = mw.notFound(config.publicDir);
 
   const handler = (req, res) => router.handle(req, res, notFound);
-  return { handler, db, services: { authService, profileService }, repositories: { users, profiles, lookups } };
+  return { handler, db, services: { authService, profileService, searchService }, repositories: { users, profiles, lookups } };
 }
 
 module.exports = { createApp };
