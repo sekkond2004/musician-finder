@@ -1,0 +1,18 @@
+/**
+ * Serves the HTML pages (the V in MVC). Pages are static; their JavaScript
+ * calls the JSON API and renders the result. Signed-in pages are guarded on the
+ * server and sent with Cache-Control: no-store, so after logout the back button
+ * can't show them again (US-2).
+ */
+const path = require('node:path');
+const { requirePageAuth } = require('../middleware');
+
+function registerPageRoutes(router, { config }) {
+  const page = (name) => (req, res) => res.sendFile(path.join(config.publicDir, name), { noStore: true });
+  const guestOnly = (name) => (req, res) =>
+    req.user ? res.redirect('/dashboard') : page(name)(req, res);
+
+  router.get('/', page('index.html'));
+}
+
+module.exports = { registerPageRoutes };
