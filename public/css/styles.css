@@ -306,3 +306,12 @@ dl.details dd { margin: 0; }
   padding: 18px;
 }
 
+/* Keep grid children from stretching past narrow screens. */
+.search-layout, .result { grid-template-columns: minmax(0, 1fr); }
+.search-layout > *, .result > * { min-width: 0; }
+.result { grid-template-columns: auto minmax(0, 1fr) auto; }
+@media (min-width: 860px) { .search-layout { grid-template-columns: 280px minmax(0, 1fr); } }
+@media (max-width: 520px) {
+  .result { grid-template-columns: auto minmax(0, 1fr); }
+  .result .distance { grid-column: 2; }
+}
