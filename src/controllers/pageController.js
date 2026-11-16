@@ -17,6 +17,7 @@ function registerPageRoutes(router, { config }) {
   router.get('/login', guestOnly('login.html'));
   router.get('/dashboard', requirePageAuth, page('dashboard.html'));
   router.get('/profile/edit', requirePageAuth, page('profile-edit.html'));
+  router.get('/search', requirePageAuth, page('search.html'));
 }
 
 module.exports = { registerPageRoutes };
